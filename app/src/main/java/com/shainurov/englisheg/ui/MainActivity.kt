@@ -9,6 +9,10 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.navigation.findNavController
+import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.shainurov.englisheg.R
 import com.shainurov.englisheg.databinding.ActivityMainBinding
 import com.shainurov.englisheg.presentation.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -34,6 +38,8 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding?.root)
 
+        val navController = this.findNavController(R.id.activity_main_nav_host_fragment)
+        binding?.activityMainBottomNavigationView?.setupWithNavController(navController)
 
         viewModel.data.observe(this){
 
