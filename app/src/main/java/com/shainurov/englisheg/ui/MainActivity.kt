@@ -36,7 +36,7 @@ class MainActivity : AppCompatActivity() {
 
 
         viewModel.data.observe(this){
-            binding?.textView?.setText( it.toString())
+
         }
 
         registerReceiver(broadcastReceiver, IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE))
