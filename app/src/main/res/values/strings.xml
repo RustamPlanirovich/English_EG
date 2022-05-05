@@ -4,4 +4,8 @@
     <string name="fragment_setting">Setting</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="playlist_name">playlist name</string>
+    <string name="playlist_level">playlist size</string>
+    <string name="playlist_size">playlist size</string>
+    <string name="download">Скачать</string>
 </resources>

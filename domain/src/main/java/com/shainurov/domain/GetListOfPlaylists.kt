@@ -1,8 +1,8 @@
 package com.shainurov.domain
 
 
-import com.shainurov.domain.models.Numbers
+import com.shainurov.domain.models.PlaylistModel
 
 interface GetListOfPlaylists {
-    suspend fun readListPlaylist(): ArrayList<Numbers>
+    suspend fun readListPlaylist(): ArrayList<PlaylistModel>
 }

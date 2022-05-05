@@ -11,10 +11,9 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.shainurov.englisheg.R
 import com.shainurov.englisheg.databinding.ActivityMainBinding
-import com.shainurov.englisheg.presentation.MainViewModel
+import com.shainurov.englisheg.presentation.viewmodels.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -41,9 +40,7 @@ class MainActivity : AppCompatActivity() {
         val navController = this.findNavController(R.id.activity_main_nav_host_fragment)
         binding?.activityMainBottomNavigationView?.setupWithNavController(navController)
 
-        viewModel.data.observe(this){
 
-        }
 
         registerReceiver(broadcastReceiver, IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE))
         dm = getSystemService(DOWNLOAD_SERVICE) as DownloadManager

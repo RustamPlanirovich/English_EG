@@ -1,6 +1,6 @@
 package com.shainurov.domain.models
 
-data class Numbers(
+data class PlaylistModel(
     val name: String,
     val url: String,
     val size: String,
