@@ -1,16 +1,20 @@
 package com.shainurov.englisheg.ui
 
+import android.app.DownloadManager
 import android.os.Bundle
+import android.os.Environment
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.shainurov.englisheg.databinding.FragmentSettingBinding
 import com.shainurov.englisheg.presentation.adapters.PlaylistsAdapter
 import com.shainurov.englisheg.presentation.viewmodels.SettingViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import java.io.File
 
 @AndroidEntryPoint
 class SettingFragment : Fragment() {
@@ -18,6 +22,8 @@ class SettingFragment : Fragment() {
     private var binding: FragmentSettingBinding? = null
     private lateinit var adapter: PlaylistsAdapter
     private val viewModel: SettingViewModel by viewModels()
+    private var dm: DownloadManager? = null
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -29,12 +35,15 @@ class SettingFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        adapter = PlaylistsAdapter()
 
+
+
+        adapter = PlaylistsAdapter {
+            viewModel.savePlaylist(it.url, it.name)
+        }
 
 
         viewModel.data.observe(viewLifecycleOwner) {
-            Log.d("Hello", "${it}")
             adapter.submitList(it)
         }
 

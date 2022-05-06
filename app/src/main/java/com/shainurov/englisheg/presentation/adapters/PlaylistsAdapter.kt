@@ -4,13 +4,14 @@ package com.shainurov.englisheg.presentation.adapters
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.shainurov.domain.models.PlaylistModel
 import com.shainurov.englisheg.databinding.PlaylistItemBinding
 
-class PlaylistsAdapter :
+class PlaylistsAdapter(private val clickListener: (playlistModel: PlaylistModel) -> Unit) :
     ListAdapter<PlaylistModel, PlaylistsAdapter.ItemViewholder>(DiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewholder {
@@ -22,19 +23,20 @@ class PlaylistsAdapter :
     }
 
     override fun onBindViewHolder(holder: ItemViewholder, position: Int) {
-        holder.bind(getItem(position))
+        holder.bind(getItem(position), clickListener)
     }
 
     class ItemViewholder(private val binding: PlaylistItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         @SuppressLint("SetTextI18n")
-        fun bind(item: PlaylistModel) = with(itemView) {
-            binding.namePlaylist.text = "Название: " + item.name
+        fun bind(item: PlaylistModel, clickListener: (PlaylistModel) -> Unit) = with(itemView) {
+            binding.namePlaylist.text = "Название: " + item.name.trim()
             binding.sizePlaylist.text = "Размер: " + item.size + " kb"
             binding.levelPlaylist.text = "Уровень: " + item.level
+            binding.downloadButton.isVisible = !item.download
 
-            setOnClickListener {
-                // TODO: Handle on click
+            binding.downloadButton.setOnClickListener {
+                clickListener(item)
             }
         }
     }
