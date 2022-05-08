@@ -5,5 +5,6 @@ data class PlaylistModel(
     val url: String,
     val size: String,
     val level: String,
-    val download: Boolean
+    val download: Boolean,
+    val filePath: String
 )

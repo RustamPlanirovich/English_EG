@@ -11,7 +11,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.shainurov.domain.models.PlaylistModel
 import com.shainurov.englisheg.databinding.PlaylistItemBinding
 
-class PlaylistsAdapter(private val clickListener: (playlistModel: PlaylistModel) -> Unit) :
+class PlaylistsAdapter(
+    private val clickListener: (playlistModel: PlaylistModel) -> Unit,
+    private val deleteClickListener: (fileName: String) -> Unit
+) :
     ListAdapter<PlaylistModel, PlaylistsAdapter.ItemViewholder>(DiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewholder {
@@ -23,20 +26,28 @@ class PlaylistsAdapter(private val clickListener: (playlistModel: PlaylistModel)
     }
 
     override fun onBindViewHolder(holder: ItemViewholder, position: Int) {
-        holder.bind(getItem(position), clickListener)
+        holder.bind(getItem(position), clickListener, deleteClickListener)
     }
 
     class ItemViewholder(private val binding: PlaylistItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         @SuppressLint("SetTextI18n")
-        fun bind(item: PlaylistModel, clickListener: (PlaylistModel) -> Unit) = with(itemView) {
+        fun bind(
+            item: PlaylistModel,
+            clickListener: (PlaylistModel) -> Unit,
+            deleteClickListener: (fileName: String) -> Unit
+        ) = with(itemView) {
             binding.namePlaylist.text = "Название: " + item.name.trim()
             binding.sizePlaylist.text = "Размер: " + item.size + " kb"
             binding.levelPlaylist.text = "Уровень: " + item.level
             binding.downloadButton.isVisible = !item.download
+            binding.deleteButton.isVisible = item.download
 
             binding.downloadButton.setOnClickListener {
                 clickListener(item)
+            }
+            binding.deleteButton.setOnClickListener {
+                deleteClickListener(item.filePath)
             }
         }
     }

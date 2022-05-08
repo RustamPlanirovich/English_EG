@@ -8,4 +8,5 @@
     <string name="playlist_level">playlist size</string>
     <string name="playlist_size">playlist size</string>
     <string name="download">Скачать</string>
+    <string name="delete_button_text">Удалить</string>
 </resources>

@@ -1,8 +1,10 @@
 package com.shainurov.englisheg.ui
 
+import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.shainurov.englisheg.R
@@ -20,6 +22,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding?.root)
+
 
         val navController = this.findNavController(R.id.activity_main_nav_host_fragment)
         binding?.activityMainBottomNavigationView?.setupWithNavController(navController)

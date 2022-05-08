@@ -5,5 +5,6 @@ data class Numbers(
     val url: String,
     val size: String,
     val level: String,
-    val downloads: Boolean
+    val downloads: Boolean,
+    val filePath: String
 )

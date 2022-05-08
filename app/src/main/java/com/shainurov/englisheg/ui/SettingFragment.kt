@@ -37,15 +37,17 @@ class SettingFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
 
+        PlaylistsAdapter(
+            clickListener = {
+                viewModel.savePlaylist(it.url, it.name)
+            },
+            deleteClickListener = { deletedFile ->
+                Log.d("Hell", deletedFile)
+                viewModel.deletePlaylisyt(deletedFile)
+            }
+        ).also { adapter = it }
 
-        adapter = PlaylistsAdapter {
-            viewModel.savePlaylist(it.url, it.name)
-        }
-
-
-        viewModel.data.observe(viewLifecycleOwner) {
-            adapter.submitList(it)
-        }
+        viewModel.data.observe(viewLifecycleOwner, adapter::submitList)
 
         binding?.allPlaylists?.adapter = adapter
 
@@ -57,7 +59,7 @@ class SettingFragment : Fragment() {
     }
 
     override fun onDestroy() {
-        binding = null
+        null.also { binding = it }
         super.onDestroy()
     }
 
