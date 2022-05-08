@@ -7,13 +7,11 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.net.Uri
 import android.os.Environment
-import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.shainurov.domain.models.SaveAllPlaylists
-import java.io.File
+import com.shainurov.domain.SaveAllPlaylists
 
-class SaveAllPlaylistsImpl(private val context: Context) : SaveAllPlaylists {
+class SaveAllPlaylistsImpl(context: Context) : SaveAllPlaylists {
 
     private var dm: DownloadManager? = null
 
@@ -38,7 +36,6 @@ class SaveAllPlaylistsImpl(private val context: Context) : SaveAllPlaylists {
 
 
     override fun download(playlistUrl: String?, playlistName: String?) {
-        val file = File(context.filesDir.absolutePath)
         dm?.enqueue(
             DownloadManager.Request(Uri.parse(playlistUrl))
                 .setAllowedNetworkTypes(

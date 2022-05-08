@@ -3,6 +3,7 @@ package com.shainurov.englisheg.presentation.viewmodels
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.shainurov.domain.DeletePlaylist
 import com.shainurov.domain.GetList
 import com.shainurov.domain.SavePlaylist
 import com.shainurov.domain.models.PlaylistModel
@@ -15,7 +16,8 @@ import javax.inject.Inject
 @HiltViewModel
 class SettingViewModel @Inject constructor(
     private val getList: GetList,
-    private val savePlaylist: SavePlaylist
+    private val savePlaylist: SavePlaylist,
+    private val deletePlaylist: DeletePlaylist
 ) : ViewModel() {
 
     val data = MutableLiveData<List<PlaylistModel>>()
@@ -27,7 +29,6 @@ class SettingViewModel @Inject constructor(
 
     fun loadData() {
         viewModelScope.launch(Dispatchers.IO) {
-            delay(2000)
             data.postValue(getList.execute())
         }
     }
@@ -37,6 +38,10 @@ class SettingViewModel @Inject constructor(
             playlistUrl,
             playlistName
         )
+    }
+
+    fun deletePlaylisyt(filePath: String) {
+        deletePlaylist.execute(filePath)
     }
 
 }

@@ -9,7 +9,7 @@ import com.shainurov.domain.models.PlaylistModel
 class ConvertListToDomain(private val apiService: ApiService, private val context: Context) {
 
     suspend fun convert(): ArrayList<PlaylistModel> {
-        val result = ReadSourcePlaylist(apiService, context).readPlaylists()
+        val result = ReadSourcePlaylist(apiService).readPlaylists()
         val converData = ArrayList<PlaylistModel>()
         for (i in result) {
             converData.add(
@@ -18,7 +18,8 @@ class ConvertListToDomain(private val apiService: ApiService, private val contex
                     url = i.url,
                     size = i.size,
                     level = i.level,
-                    download = i.downloads
+                    download = i.downloads,
+                    filePath = i.filePath
                 )
             )
         }

@@ -2,8 +2,11 @@ package com.shainurov.englisheg.di.moduls
 
 import android.content.Context
 import com.shainurov.data.network.ApiService
+import com.shainurov.data.repository.DeleteFileImpl
 import com.shainurov.data.repository.GetListOfPlaylistsImpl
 import com.shainurov.data.repository.SaveAllPlaylistsImpl
+import com.shainurov.domain.DeleteFile
+import com.shainurov.domain.DeletePlaylist
 import com.shainurov.domain.GetList
 import com.shainurov.domain.SavePlaylist
 import com.shainurov.englisheg.presentation.utils.BASE_URL
@@ -59,6 +62,15 @@ class CommonModule {
         @ApplicationContext context: Context,
     ): SaveAllPlaylistsImpl {
         return SaveAllPlaylistsImpl(context)
+    }
+
+    @Provides
+    fun deletePlaylist(deleteFile: DeleteFileImpl): DeletePlaylist {
+        return DeletePlaylist(deleteFile)
+    }
+    @Provides
+    fun deleteFile():DeleteFileImpl{
+        return DeleteFileImpl()
     }
 
 
