@@ -1,5 +1,6 @@
 package com.shainurov.data.repository
 
+import android.annotation.SuppressLint
 import android.app.DownloadManager
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -7,9 +8,12 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.net.Uri
 import android.os.Environment
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.shainurov.domain.SaveAllPlaylists
+import java.io.File
+
 
 class SaveAllPlaylistsImpl(context: Context) : SaveAllPlaylists {
 
@@ -17,20 +21,7 @@ class SaveAllPlaylistsImpl(context: Context) : SaveAllPlaylists {
 
 
     init {
-        val broadcastReceiver = object : BroadcastReceiver() {
-            override fun onReceive(context: Context?, intent: Intent?) {
-                val action = intent?.action
-                if (DownloadManager.ACTION_DOWNLOAD_COMPLETE == action) {
-                    Toast.makeText(context, "Download Completed", Toast.LENGTH_SHORT).show()
-                }
-            }
-        }
 
-
-        context.registerReceiver(
-            broadcastReceiver,
-            IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE)
-        )
         dm = context.getSystemService(AppCompatActivity.DOWNLOAD_SERVICE) as DownloadManager
     }
 
@@ -45,7 +36,7 @@ class SaveAllPlaylistsImpl(context: Context) : SaveAllPlaylists {
                 .setTitle("$playlistName")
                 .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
                 .setDestinationInExternalPublicDir(
-                    Environment.DIRECTORY_DCIM,
+                    Environment.DIRECTORY_DOCUMENTS,
                     "$playlistName".trim()
                 )
         )

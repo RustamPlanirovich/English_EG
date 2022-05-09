@@ -1,6 +1,7 @@
 package com.shainurov.data.datasource
 
 import android.content.Context
+import android.net.Uri
 import android.os.Environment
 import android.util.Log
 import com.shainurov.data.models.Numbers
@@ -19,7 +20,7 @@ class ReadSourcePlaylist(private val apiService: ApiService) {
             for (i in datas) {
 
                 val file = File(
-                    Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM),
+                    Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS),
                     i.split(",")[0].trim()
                 )
 
@@ -30,7 +31,7 @@ class ReadSourcePlaylist(private val apiService: ApiService) {
                         size = i.split(",")[2],
                         level = i.split(",")[3],
                         downloads = file.exists(),
-                        filePath = "$file"
+                        filePath = file
                     )
                 )
             }
