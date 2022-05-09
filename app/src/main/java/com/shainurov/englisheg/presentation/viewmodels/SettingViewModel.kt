@@ -11,6 +11,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.io.File
 import javax.inject.Inject
 
 @HiltViewModel
@@ -21,6 +22,7 @@ class SettingViewModel @Inject constructor(
 ) : ViewModel() {
 
     val data = MutableLiveData<List<PlaylistModel>>()
+    val deleted = MutableLiveData<Boolean>()
 
 
     init {
@@ -40,8 +42,8 @@ class SettingViewModel @Inject constructor(
         )
     }
 
-    fun deletePlaylisyt(filePath: String) {
-        deletePlaylist.execute(filePath)
+    fun deletePlaylisyt(filePath: File) {
+        deleted.value = deletePlaylist.execute(filePath)
     }
 
 }

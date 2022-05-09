@@ -10,10 +10,11 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.shainurov.domain.models.PlaylistModel
 import com.shainurov.englisheg.databinding.PlaylistItemBinding
+import java.io.File
 
 class PlaylistsAdapter(
     private val clickListener: (playlistModel: PlaylistModel) -> Unit,
-    private val deleteClickListener: (fileName: String) -> Unit
+    private val deleteClickListener: (fileName: File) -> Unit
 ) :
     ListAdapter<PlaylistModel, PlaylistsAdapter.ItemViewholder>(DiffCallback()) {
 
@@ -35,7 +36,7 @@ class PlaylistsAdapter(
         fun bind(
             item: PlaylistModel,
             clickListener: (PlaylistModel) -> Unit,
-            deleteClickListener: (fileName: String) -> Unit
+            deleteClickListener: (fileName: File) -> Unit
         ) = with(itemView) {
             binding.namePlaylist.text = "Название: " + item.name.trim()
             binding.sizePlaylist.text = "Размер: " + item.size + " kb"
