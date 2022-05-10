@@ -4,11 +4,16 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/administrator/AndroidStudioProjects/EnglishEG/app/src/main/res/drawable-v24/ic_outline_home_24.xml" value="0.276" />
+        <entry key="..\:/Users/administrator/AndroidStudioProjects/EnglishEG/app/src/main/res/drawable/circle_checkbox.xml" value="0.276" />
+        <entry key="..\:/Users/administrator/AndroidStudioProjects/EnglishEG/app/src/main/res/drawable/custom_progress.xml" value="0.276" />
+        <entry key="..\:/Users/administrator/AndroidStudioProjects/EnglishEG/app/src/main/res/drawable/ic_baseline_check_24.xml" value="0.1995" />
         <entry key="..\:/Users/administrator/AndroidStudioProjects/EnglishEG/app/src/main/res/drawable/playlist_gradient_background.xml" value="0.1645" />
         <entry key="..\:/Users/administrator/AndroidStudioProjects/EnglishEG/app/src/main/res/layout/activity_main.xml" value="0.371875" />
+        <entry key="..\:/Users/administrator/AndroidStudioProjects/EnglishEG/app/src/main/res/layout/fragment_detail.xml" value="0.371875" />
         <entry key="..\:/Users/administrator/AndroidStudioProjects/EnglishEG/app/src/main/res/layout/fragment_edit.xml" value="0.371875" />
         <entry key="..\:/Users/administrator/AndroidStudioProjects/EnglishEG/app/src/main/res/layout/fragment_setting.xml" value="0.371875" />
         <entry key="..\:/Users/administrator/AndroidStudioProjects/EnglishEG/app/src/main/res/layout/playlist_item.xml" value="0.371875" />
+        <entry key="..\:/Users/administrator/AndroidStudioProjects/EnglishEG/app/src/main/res/layout/question_item.xml" value="0.371875" />
         <entry key="..\:/Users/administrator/AndroidStudioProjects/EnglishEG/app/src/main/res/menu/navigation_menu.xml" value="0.371875" />
       </map>
     </option>

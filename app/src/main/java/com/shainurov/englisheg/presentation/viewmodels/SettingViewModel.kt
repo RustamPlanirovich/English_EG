@@ -23,6 +23,7 @@ class SettingViewModel @Inject constructor(
 
     val data = MutableLiveData<List<PlaylistModel>>()
     val deleted = MutableLiveData<Boolean>()
+    val sel = MutableLiveData<PlaylistModel>()
 
 
     init {
