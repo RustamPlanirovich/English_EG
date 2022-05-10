@@ -13,7 +13,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import com.shainurov.englisheg.R
 import com.shainurov.englisheg.databinding.FragmentSettingBinding
 import com.shainurov.englisheg.presentation.adapters.PlaylistsAdapter
 import com.shainurov.englisheg.presentation.viewmodels.SettingViewModel
@@ -27,7 +30,7 @@ class SettingFragment : Fragment() {
 
     private var binding: FragmentSettingBinding? = null
     private lateinit var adapter: PlaylistsAdapter
-    private val viewModel: SettingViewModel by viewModels()
+    private val viewModel: SettingViewModel by activityViewModels()
 
     private val broadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
@@ -67,6 +70,11 @@ class SettingFragment : Fragment() {
             },
             deleteClickListener = { deletedFile ->
                 viewModel.deletePlaylisyt(deletedFile)
+            },
+            itemClickListener = {
+                viewModel.sel.value = it
+                this.findNavController().navigate(R.id.action_settingFragment_to_detailFragment)
+
             }
         ).also {
             adapter = it

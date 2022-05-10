@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.shainurov.englisheg.R
 import com.shainurov.englisheg.databinding.FragmentHomeBinding
+import org.json.JSONArray
 
 class HomeFragment : Fragment() {
 

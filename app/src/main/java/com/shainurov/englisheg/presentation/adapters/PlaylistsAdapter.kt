@@ -14,7 +14,8 @@ import java.io.File
 
 class PlaylistsAdapter(
     private val clickListener: (playlistModel: PlaylistModel) -> Unit,
-    private val deleteClickListener: (fileName: File) -> Unit
+    private val deleteClickListener: (fileName: File) -> Unit,
+    private val itemClickListener: (playlistModel: PlaylistModel) -> Unit
 ) :
     ListAdapter<PlaylistModel, PlaylistsAdapter.ItemViewholder>(DiffCallback()) {
 
@@ -27,7 +28,7 @@ class PlaylistsAdapter(
     }
 
     override fun onBindViewHolder(holder: ItemViewholder, position: Int) {
-        holder.bind(getItem(position), clickListener, deleteClickListener)
+        holder.bind(getItem(position), clickListener, deleteClickListener, itemClickListener)
     }
 
     class ItemViewholder(private val binding: PlaylistItemBinding) :
@@ -36,7 +37,8 @@ class PlaylistsAdapter(
         fun bind(
             item: PlaylistModel,
             clickListener: (PlaylistModel) -> Unit,
-            deleteClickListener: (fileName: File) -> Unit
+            deleteClickListener: (fileName: File) -> Unit,
+            itemClickListener: (PlaylistModel) -> Unit
         ) = with(itemView) {
             binding.namePlaylist.text = "Название: " + item.name.trim()
             binding.sizePlaylist.text = "Размер: " + item.size + " kb"
@@ -49,6 +51,9 @@ class PlaylistsAdapter(
             }
             binding.deleteButton.setOnClickListener {
                 deleteClickListener(item.filePath)
+            }
+            itemView.setOnClickListener{
+                itemClickListener(item)
             }
         }
     }
