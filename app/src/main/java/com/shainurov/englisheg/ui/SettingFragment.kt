@@ -32,6 +32,7 @@ class SettingFragment : Fragment() {
     private lateinit var adapter: PlaylistsAdapter
     private val viewModel: SettingViewModel by activityViewModels()
 
+
     private val broadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             val action = intent?.action
@@ -58,11 +59,11 @@ class SettingFragment : Fragment() {
         }
 
 
-
         context?.registerReceiver(
             broadcastReceiver,
             IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE)
         )
+
 
         PlaylistsAdapter(
             clickListener = {
