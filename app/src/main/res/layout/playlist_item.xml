@@ -4,13 +4,12 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/all_margin"
-    app:cardElevation="16dp"
-    app:cardCornerRadius="16dp">
+    app:cardCornerRadius="16dp"
+    app:cardElevation="20dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/playlist_gradient_background">
+        android:layout_height="match_parent">
 
         <TextView
             android:id="@+id/name_playlist"
@@ -59,8 +58,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
-            android:visibility="gone"
             android:text="@string/delete_button_text"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/size_playlist" />
     </androidx.constraintlayout.widget.ConstraintLayout>

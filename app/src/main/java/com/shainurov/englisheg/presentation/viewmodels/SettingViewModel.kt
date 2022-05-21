@@ -3,27 +3,26 @@ package com.shainurov.englisheg.presentation.viewmodels
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.shainurov.domain.DeletePlaylist
-import com.shainurov.domain.GetList
-import com.shainurov.domain.SavePlaylist
 import com.shainurov.domain.models.PlaylistModel
+import com.shainurov.domain.useCase.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.io.File
 import javax.inject.Inject
 
 @HiltViewModel
 class SettingViewModel @Inject constructor(
-    private val getList: GetList,
-    private val savePlaylist: SavePlaylist,
-    private val deletePlaylist: DeletePlaylist
+    private val getListUseCase: GetListUseCase,
+    private val deleteFileUseCase: DeleteFileUseCase,
+    private val saveAllPlaylistsUseCase: SaveAllPlaylistsUseCase,
+    private val getListOfPlaylistsUseCase: GetListOfPlaylistsUseCase,
+    private val savePlaylistUseCase: SavePlaylistUseCase,
+    private val deletePlaylistUseCase: DeletePlaylistUseCase
 ) : ViewModel() {
 
     val data = MutableLiveData<List<PlaylistModel>>()
     val deleted = MutableLiveData<Boolean>()
-
 
     init {
         loadData()
@@ -31,19 +30,19 @@ class SettingViewModel @Inject constructor(
 
     fun loadData() {
         viewModelScope.launch(Dispatchers.IO) {
-            data.postValue(getList.execute())
+            data.postValue(getListUseCase.invoke())
         }
     }
 
     fun savePlaylist(playlistUrl: String, playlistName: String) {
-        savePlaylist.execute(
+        savePlaylistUseCase(
             playlistUrl,
             playlistName
         )
     }
 
     fun deletePlaylisyt(filePath: File) {
-        deleted.value = deletePlaylist.execute(filePath)
+        deleted.value = deletePlaylistUseCase(filePath)
     }
 
 }

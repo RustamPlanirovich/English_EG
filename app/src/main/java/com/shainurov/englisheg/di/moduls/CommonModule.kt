@@ -1,14 +1,11 @@
 package com.shainurov.englisheg.di.moduls
 
 import android.content.Context
+import com.shainurov.data.datasource.FileDataSource
 import com.shainurov.data.network.ApiService
-import com.shainurov.data.repository.DeleteFileImpl
-import com.shainurov.data.repository.GetListOfPlaylistsImpl
-import com.shainurov.data.repository.SaveAllPlaylistsImpl
-import com.shainurov.domain.DeleteFile
-import com.shainurov.domain.DeletePlaylist
-import com.shainurov.domain.GetList
-import com.shainurov.domain.SavePlaylist
+import com.shainurov.data.repository.FileRepositoryImpl
+import com.shainurov.domain.repository.FileRepository
+import com.shainurov.domain.useCase.*
 import com.shainurov.englisheg.presentation.utils.BASE_URL
 import dagger.Module
 import dagger.Provides
@@ -37,40 +34,49 @@ class CommonModule {
             .create(ApiService::class.java)
     }
 
-    @Provides
-    @Singleton
-    fun getList(getListOfPlaylists: GetListOfPlaylistsImpl): GetList {
-        return GetList(getListOfPlaylists)
-    }
+
+
 
     @Provides
     @Singleton
-    fun getListOfPlaylists(
-        getClient: ApiService,
-        @ApplicationContext context: Context
-    ): GetListOfPlaylistsImpl {
-        return GetListOfPlaylistsImpl(getClient, context)
+    fun provideFileDataSource(@ApplicationContext context: Context): FileDataSource {
+        return FileDataSource(getClient(), context)
     }
 
     @Provides
-    fun savePlaylist(saveAllPlaylists: SaveAllPlaylistsImpl): SavePlaylist {
-        return SavePlaylist(saveAllPlaylists)
+    @Singleton
+    fun provideFileRepositroty(@ApplicationContext context: Context): FileRepository {
+        return FileRepositoryImpl(provideFileDataSource(context))
     }
 
     @Provides
-    fun saveAllPlaylists(
-        @ApplicationContext context: Context,
-    ): SaveAllPlaylistsImpl {
-        return SaveAllPlaylistsImpl(context)
+    fun provideDeleteFileUseCase(@ApplicationContext context: Context):DeleteFileUseCase{
+        return DeleteFileUseCase(provideFileRepositroty(context))
     }
 
     @Provides
-    fun deletePlaylist(deleteFile: DeleteFileImpl): DeletePlaylist {
-        return DeletePlaylist(deleteFile)
+    fun provideDeletePlaylistUseCase(@ApplicationContext context: Context):DeletePlaylistUseCase{
+        return DeletePlaylistUseCase(provideFileRepositroty(context))
     }
+
     @Provides
-    fun deleteFile():DeleteFileImpl{
-        return DeleteFileImpl()
+    fun provideGetListOfPlaylistsUseCase(@ApplicationContext context: Context):GetListOfPlaylistsUseCase{
+        return GetListOfPlaylistsUseCase(provideFileRepositroty(context))
+    }
+
+    @Provides
+    fun provideGetListUseCase(@ApplicationContext context: Context):GetListUseCase{
+        return GetListUseCase(provideFileRepositroty(context))
+    }
+
+    @Provides
+    fun provideSaveAllPlaylistsUseCase(@ApplicationContext context: Context):SaveAllPlaylistsUseCase{
+        return SaveAllPlaylistsUseCase(provideFileRepositroty(context))
+    }
+
+    @Provides
+    fun provideSavePlaylistUseCase(@ApplicationContext context: Context):SavePlaylistUseCase{
+        return SavePlaylistUseCase(provideFileRepositroty(context))
     }
 
 
