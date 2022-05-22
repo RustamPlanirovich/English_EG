@@ -5,9 +5,9 @@ data class QuestionModel(
     val id: Int,
     var countCorrectAnswers: Int,
     var countIncorrectAnswers: Int,
-    val removeFromStudy: Boolean,
-    val sentenceInEnglish: String,
-    val sentenceInRussian: String,
+    var removeFromStudy: Boolean,
+    var sentenceInEnglish: String,
+    var sentenceInRussian: String,
     var totalCount: Int,
     val transcription: String
 )

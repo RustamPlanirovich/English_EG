@@ -19,6 +19,7 @@ class DetailViewModel @Inject constructor(
 ) : ViewModel() {
 
     var data = MutableLiveData<List<QuestionModel>>()
+    val mutableSelectedItem = MutableLiveData<QuestionModel>()
 
 
     fun getListOfPlaylist(path: File, name: String) {

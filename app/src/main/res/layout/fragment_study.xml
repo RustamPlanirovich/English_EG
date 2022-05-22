@@ -7,6 +7,16 @@
     android:background="#003B46">
 
 
+    <TextView
+        android:id="@+id/current_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0/0"
+        app:layout_constraintBottom_toTopOf="@+id/questionView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <ImageView
         android:id="@+id/editCard"
         android:layout_width="wrap_content"

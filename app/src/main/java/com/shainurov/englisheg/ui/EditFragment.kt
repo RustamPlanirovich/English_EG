@@ -11,6 +11,7 @@ import androidx.navigation.fragment.findNavController
 import com.shainurov.domain.models.QuestionModel
 import com.shainurov.englisheg.R
 import com.shainurov.englisheg.databinding.FragmentEditBinding
+import com.shainurov.englisheg.presentation.viewmodels.DetailViewModel
 import com.shainurov.englisheg.presentation.viewmodels.EditViewModel
 import com.shainurov.englisheg.presentation.viewmodels.StudyViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -20,6 +21,7 @@ class EditFragment : Fragment() {
 
     private lateinit var binding: FragmentEditBinding
     private val viewModelStudy: StudyViewModel by activityViewModels()
+    private val viewModelDetail: DetailViewModel by activityViewModels()
     private val viewModel: EditViewModel by viewModels()
     lateinit var question: QuestionModel
 
@@ -41,12 +43,17 @@ class EditFragment : Fragment() {
             question = it
         }
 
+        viewModelDetail.mutableSelectedItem.observe(viewLifecycleOwner) {
+            binding.sentenceInEnglish.setText(it.sentenceInEnglish)
+            binding.sentenceInRussian.setText(it.sentenceInRussian)
+            binding.learn.isChecked = it.removeFromStudy
+            question = it
+        }
+
         binding.saveBtn.setOnClickListener {
-            question.copy(
-                sentenceInEnglish = binding.sentenceInEnglish.text.toString(),
-                sentenceInRussian = binding.sentenceInRussian.text.toString(),
-                removeFromStudy = binding.learn.isChecked
-            )
+            question.sentenceInEnglish = binding.sentenceInEnglish.text.toString()
+            question.sentenceInRussian = binding.sentenceInRussian.text.toString()
+            question.removeFromStudy = binding.learn.isChecked
 
             viewModel.update(question)
             this.findNavController().navigate(R.id.action_editFragment_to_studyFragment)

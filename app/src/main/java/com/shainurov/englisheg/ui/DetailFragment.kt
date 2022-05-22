@@ -10,8 +10,10 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.shainurov.englisheg.R
 import com.shainurov.englisheg.databinding.FragmentDetailBinding
 import com.shainurov.englisheg.presentation.adapters.QuestionAdapter
 import com.shainurov.englisheg.presentation.viewmodels.DetailViewModel
@@ -23,7 +25,7 @@ class DetailFragment : Fragment() {
 
     private lateinit var binding: FragmentDetailBinding
     private val viewModelSetting: SettingViewModel by activityViewModels()
-    private val viewModel: DetailViewModel by viewModels()
+    private val viewModel: DetailViewModel by activityViewModels()
     private lateinit var adapter: QuestionAdapter
 
     override fun onCreateView(
@@ -43,7 +45,8 @@ class DetailFragment : Fragment() {
 
         QuestionAdapter(
             clickListener = {
-
+                viewModel.mutableSelectedItem.value = it
+                this.findNavController().navigate(R.id.action_detailFragment_to_editFragment)
             }
         ).also {
             adapter = it

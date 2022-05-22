@@ -7,6 +7,7 @@ import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -30,7 +31,6 @@ class StudyFragment : Fragment() {
 
     private lateinit var binding: FragmentStudyBinding
     private val viewModel: StudyViewModel by activityViewModels()
-    private val records = ArrayList<QuestionModel>()
     private val viewModelHome: HomeViewModel by activityViewModels()
     private var num: Int = 0
 
@@ -44,14 +44,24 @@ class StudyFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Toast.makeText(requireContext(),"Hello",Toast.LENGTH_SHORT).show()
+        viewModel.num.observe(viewLifecycleOwner){
+            num = it
+        }
 
         viewModelHome.selectFile.observe(viewLifecycleOwner) {
             viewModel.getData(it.fileName)
         }
 
+        viewModel.currentId.observe(viewLifecycleOwner){
+            binding.currentId.text = it
+        }
+
+
+
         viewModel.data.observe(viewLifecycleOwner) {
-            records.addAll(it)
-            if (records.isNotEmpty()) {
+//            records.addAll(it)
+            if (viewModel.data.value!!.isNotEmpty()) {
                 binding.nextBtn.apply {
                     isVisible = true
                     text = getString(R.string.start_button_text)
@@ -59,13 +69,18 @@ class StudyFragment : Fragment() {
                 binding.transcriptionTV.isVisible = false
                 binding.learnCB.isVisible = false
             }
+//todo here
+            loadSentece()
+            viewModel.currentId()
+
         }
+
 
         lifecycleScope.launchWhenCreated {
             viewModel.viewUIState.collect {
                 when (it) {
-                    is LoginUIState.Success -> {
-                        binding.timeCA.text = "close"
+                    is LoginUIState.Done -> {
+                        binding.timeCA.text = it.name
                         binding.timeCA.setTextColor(resources.getColor(R.color.all_button))
                     }
                     is LoginUIState.Loading ->
@@ -76,9 +91,11 @@ class StudyFragment : Fragment() {
         }
 
         binding.learnCB.setOnCheckedChangeListener { compoundButton, b ->
-            records[num].copy(removeFromStudy = b)
+//            records[num].removeFromStudy = b
+            viewModel.data.value!![num].removeFromStudy = b
             lifecycleScope.launch(Dispatchers.IO) {
-                records[num].let { viewModel.insert(it) }
+//                records[num].let { viewModel.insert(it) }
+                viewModel.data.value!![num].let { viewModel.insert(it) }
             }
         }
 
@@ -91,7 +108,7 @@ class StudyFragment : Fragment() {
                 keyCode == KeyEvent.KEYCODE_ENTER
             ) {
                 binding.apply {
-                    records[num].apply {
+                    viewModel.data.value!![num].apply {
                         if (answerET.text.isNotEmpty()) {
                             nextBtn.isVisible = true
 
@@ -124,7 +141,8 @@ class StudyFragment : Fragment() {
                                 answerET.isEnabled = false
 
                                 correctAnswerCV.isVisible = true
-                                correctAnswer.text = records[num].sentenceInEnglish
+//                                correctAnswer.text = records[num].sentenceInEnglish
+                                correctAnswer.text = viewModel.data.value!![num].sentenceInEnglish
                                 viewModel.startTimeCounter()
 
 
@@ -143,9 +161,13 @@ class StudyFragment : Fragment() {
 
         binding.nextBtn.setOnClickListener {
             binding.editCard.isVisible = true
-            random()
+            binding.answerET.text.clear()
+            viewModel.random()
             loadSentece()
-            viewModel.mutableSelectedItem.value = records[num]
+            viewModel.currentId()
+
+//            viewModel.mutableSelectedItem.value = records[num]
+            viewModel.mutableSelectedItem.value = viewModel.data.value?.get(num)
         }
     }
 
@@ -160,21 +182,22 @@ class StudyFragment : Fragment() {
             learnCB.isVisible = true
 
             questionView.setTextColor(resources.getColor(R.color.white))
-            answerET.apply {
-                isEnabled = true
-                text.clear()
-            }
+
             if (answerET.text.isEmpty()) {
                 nextBtn.isVisible = false
+                answerET.isEnabled = true
             }
-            learnCB.isChecked = records[num].removeFromStudy
-            questionView.text = records[num].sentenceInRussian
-            transcriptionTV.text = records[num].transcription
+//            learnCB.isChecked = records[num].removeFromStudy
+            learnCB.isChecked = viewModel.data.value!![num].removeFromStudy
+//            questionView.text = records[num].sentenceInRussian
+            questionView.text = viewModel.data.value!![num].sentenceInRussian
+//            transcriptionTV.text = records[num].transcription
+            transcriptionTV.text = viewModel.data.value!![num].transcription
 
             ObjectAnimator.ofInt(
                 binding.learnPB,
                 "progress",
-                records[num].totalCount
+                viewModel.data.value!![num].totalCount
             )
                 .setDuration(100)
                 .start()
@@ -183,12 +206,6 @@ class StudyFragment : Fragment() {
     }
 
 
-    fun random() {
-        val start = 0
-        val end = records.size
-        require(!(start > end || end - start + 1 > Int.MAX_VALUE)) { "Illegal Argument" }
-        num = Random(System.nanoTime()).nextInt(end - start + 1) + start
-    }
 
     override fun onDestroy() {
         super.onDestroy()
