@@ -15,4 +15,7 @@ interface QuestionDao {
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
     fun update(question: Question)
+
+    @Query("DELETE FROM englisGE WHERE fileName = :fileName")
+    fun delete(vararg fileName: String): Int
 }

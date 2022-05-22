@@ -22,8 +22,8 @@ class FileRepositoryImpl(
     }
 
 
-    override suspend fun getListOfPlalist(path: File): List<QuestionModel> {
-        return fileDataSource.readDataFromJsonFile(path).map { it.mapToDomain() }
+    override suspend fun getListOfPlalist(path: File, name: String): List<QuestionModel> {
+        return fileDataSource.readDataFromJsonFile(path, name).map { it.mapToDomain() }
     }
 
 
@@ -41,6 +41,10 @@ class FileRepositoryImpl(
 
     override suspend fun insertDatabase(questionModel: QuestionModel) {
         fileDataSource.insertDatabase(questionModel.mapToData())
+    }
+
+    override suspend fun deleteAll(fileName: String): Int {
+        return fileDataSource.deleteAll(fileName)
     }
 
 }

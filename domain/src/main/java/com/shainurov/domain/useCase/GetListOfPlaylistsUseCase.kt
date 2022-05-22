@@ -7,7 +7,7 @@ import java.io.File
 
 
 class GetListOfPlaylistsUseCase(private val fileRepository: FileRepository) {
-    suspend operator fun invoke(path: File): List<QuestionModel> {
-        return fileRepository.getListOfPlalist(path)
+    suspend operator fun invoke(path: File, name: String): List<QuestionModel> {
+        return fileRepository.getListOfPlalist(path, name)
     }
 }

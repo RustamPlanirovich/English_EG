@@ -70,8 +70,8 @@ class SettingFragment : Fragment() {
             clickListener = {
                 viewModel.savePlaylist(it.url, it.name)
             },
-            deleteClickListener = { deletedFile ->
-                viewModel.deletePlaylisyt(deletedFile)
+            deleteClickListener = { deletedFile, file ->
+                viewModel.deletePlaylisyt(deletedFile, file.trim())
             },
             itemClickListener = {
                 viewModel.sel.value = it

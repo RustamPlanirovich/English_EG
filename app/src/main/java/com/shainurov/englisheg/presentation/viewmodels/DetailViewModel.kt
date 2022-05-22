@@ -21,8 +21,8 @@ class DetailViewModel @Inject constructor(
     var data = MutableLiveData<List<QuestionModel>>()
 
 
-    fun getListOfPlaylist(path: File) {
-        viewModelScope.launch(Dispatchers.IO) { getListOfPlaylistsUseCase.invoke(path) }
+    fun getListOfPlaylist(path: File, name: String) {
+        viewModelScope.launch(Dispatchers.IO) { getListOfPlaylistsUseCase.invoke(path, name) }
 
     }
 

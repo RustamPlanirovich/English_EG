@@ -29,7 +29,7 @@ import kotlin.collections.ArrayList
 class StudyFragment : Fragment() {
 
     private lateinit var binding: FragmentStudyBinding
-    private val viewModel: StudyViewModel by viewModels()
+    private val viewModel: StudyViewModel by activityViewModels()
     private val records = ArrayList<QuestionModel>()
     private val viewModelHome: HomeViewModel by activityViewModels()
     private var num: Int = 0
@@ -182,8 +182,12 @@ class StudyFragment : Fragment() {
 
     }
 
+
     fun random() {
-        num = (0..records.size).filter { it != num }.random()
+        val start = 0
+        val end = records.size
+        require(!(start > end || end - start + 1 > Int.MAX_VALUE)) { "Illegal Argument" }
+        num = Random(System.nanoTime()).nextInt(end - start + 1) + start
     }
 
     override fun onDestroy() {

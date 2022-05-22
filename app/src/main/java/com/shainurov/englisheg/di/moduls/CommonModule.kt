@@ -96,5 +96,10 @@ class CommonModule {
         return InsertDatabaseUseCase(provideFileRepositroty(context))
     }
 
+    @Provides
+    fun provideDeletePlaylistFromDatabase(@ApplicationContext context: Context):DeletePlaylistFromDatabase{
+        return DeletePlaylistFromDatabase(provideFileRepositroty(context))
+    }
+
 
 }

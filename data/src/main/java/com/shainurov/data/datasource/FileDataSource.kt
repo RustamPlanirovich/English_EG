@@ -90,15 +90,19 @@ class FileDataSource(
         return true
     }
 
-    suspend fun readDataFromJsonFile(path: File): ArrayList<Question> {
-        questionList.clear()
-        val jsonSelectedFile = context.contentResolver.openInputStream(path.toUri())
-        val inputAsString = jsonSelectedFile?.bufferedReader().use { it?.readText() }
-        val gson = Gson()
-        val data = gson.fromJson(inputAsString, Questions::class.java)
-        for (question in data.questions) {
-            saveSelectPlaylistInDatabase(question)
-            questionList.add(question)
+    suspend fun readDataFromJsonFile(path: File, name: String): ArrayList<Question> {
+        if (db.dao().getAllQuestion(fileName = name).isNotEmpty()){
+
+        } else {
+            questionList.clear()
+            val jsonSelectedFile = context.contentResolver.openInputStream(path.toUri())
+            val inputAsString = jsonSelectedFile?.bufferedReader().use { it?.readText() }
+            val gson = Gson()
+            val data = gson.fromJson(inputAsString, Questions::class.java)
+            for (question in data.questions) {
+                saveSelectPlaylistInDatabase(question)
+                questionList.add(question)
+            }
         }
         return questionList
     }
@@ -125,5 +129,9 @@ class FileDataSource(
 
     suspend fun insertDatabase(question: Question) {
         db.dao().insert(question)
+    }
+
+    suspend fun deleteAll(fileName: String): Int{
+        return db.dao().delete(fileName)
     }
 }

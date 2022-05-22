@@ -3,11 +3,9 @@ package com.shainurov.englisheg.ui
 import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.net.toUri
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -19,7 +17,6 @@ import com.shainurov.englisheg.presentation.adapters.QuestionAdapter
 import com.shainurov.englisheg.presentation.viewmodels.DetailViewModel
 import com.shainurov.englisheg.presentation.viewmodels.SettingViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import java.io.File
 
 @AndroidEntryPoint
 class DetailFragment : Fragment() {
@@ -65,13 +62,13 @@ class DetailFragment : Fragment() {
 
         viewModelSetting.sel.observe(viewLifecycleOwner) {
             viewModel.readDataFromDatabase(it.name.trim())
-            viewModel.getListOfPlaylist(it.filePath)
+            viewModel.getListOfPlaylist(it.filePath, it.name)
             viewModel.readDataFromDatabase(it.name.trim())
         }
 
         binding.scrollToTop.setOnClickListener {
             val animator = ValueAnimator.ofInt(
-                binding.detailRecyclerView.getCurrentPosition()!!,
+                binding.detailRecyclerView.getCurrentPosition(),
                 0
             )
             animator.duration = 3000
