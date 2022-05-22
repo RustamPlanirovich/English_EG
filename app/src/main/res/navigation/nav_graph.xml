@@ -9,7 +9,11 @@
         android:id="@+id/homeFragment"
         android:name="com.shainurov.englisheg.ui.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_studyFragment"
+            app:destination="@id/studyFragment" />
+    </fragment>
     <fragment
         android:id="@+id/settingFragment"
         android:name="com.shainurov.englisheg.ui.SettingFragment"
@@ -30,6 +34,12 @@
         <action
             android:id="@+id/action_editFragment_to_settingFragment"
             app:destination="@id/settingFragment" />
+        <action
+            android:id="@+id/action_editFragment_to_studyFragment"
+            app:destination="@id/studyFragment" />
+        <action
+            android:id="@+id/action_editFragment_to_detailFragment"
+            app:destination="@id/detailFragment" />
     </fragment>
     <fragment
         android:id="@+id/detailFragment"
@@ -39,5 +49,17 @@
         <action
             android:id="@+id/action_detailFragment_to_settingFragment"
             app:destination="@id/settingFragment" />
+        <action
+            android:id="@+id/action_detailFragment_to_editFragment"
+            app:destination="@id/editFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/studyFragment"
+        android:name="com.shainurov.englisheg.ui.StudyFragment"
+        android:label="fragment_study"
+        tools:layout="@layout/fragment_study" >
+        <action
+            android:id="@+id/action_studyFragment_to_editFragment"
+            app:destination="@id/editFragment" />
     </fragment>
 </navigation>

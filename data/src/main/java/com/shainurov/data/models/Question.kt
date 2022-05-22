@@ -8,6 +8,9 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "englisGE")
 data class Question(
 
+    @ColumnInfo(name = "fileName")
+    val fileName:String,
+
     @ColumnInfo(name = "id")
     @PrimaryKey(autoGenerate = true)
     val id: Int,

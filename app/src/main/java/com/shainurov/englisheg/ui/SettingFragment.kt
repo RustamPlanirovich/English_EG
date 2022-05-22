@@ -12,6 +12,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -28,7 +29,7 @@ import java.io.FileInputStream
 @AndroidEntryPoint
 class SettingFragment : Fragment() {
 
-    private var binding: FragmentSettingBinding? = null
+    private lateinit var binding: FragmentSettingBinding
     private lateinit var adapter: PlaylistsAdapter
     private val viewModel: SettingViewModel by activityViewModels()
 
@@ -48,7 +49,7 @@ class SettingFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentSettingBinding.inflate(layoutInflater, container, false)
-        return binding?.root
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -69,8 +70,8 @@ class SettingFragment : Fragment() {
             clickListener = {
                 viewModel.savePlaylist(it.url, it.name)
             },
-            deleteClickListener = { deletedFile ->
-                viewModel.deletePlaylisyt(deletedFile)
+            deleteClickListener = { deletedFile, file ->
+                viewModel.deletePlaylisyt(deletedFile, file.trim())
             },
             itemClickListener = {
                 viewModel.sel.value = it
@@ -81,19 +82,21 @@ class SettingFragment : Fragment() {
             adapter = it
         }
 
-        viewModel.data.observe(viewLifecycleOwner, adapter::submitList)
+        viewModel.data.observe(viewLifecycleOwner){
+            adapter.submitList(it)
+            binding.progressBar2.isVisible = false
+        }
 
-        binding?.allPlaylists?.adapter = adapter
+        binding.allPlaylists.adapter = adapter
 
-        binding?.swipe?.setOnRefreshListener {
+        binding.swipe.setOnRefreshListener {
             viewModel.loadData()
-            binding?.swipe?.isRefreshing = false
+            binding.swipe.isRefreshing = false
         }
 
     }
 
     override fun onDestroy() {
-        null.also { binding = it }
         super.onDestroy()
     }
 

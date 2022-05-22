@@ -9,4 +9,6 @@
     <string name="playlist_size">playlist size</string>
     <string name="download">Скачать</string>
     <string name="delete_button_text">Удалить</string>
+    <string name="start_button_text">Start</string>
+    <string name="next_button_text">Next</string>
 </resources>

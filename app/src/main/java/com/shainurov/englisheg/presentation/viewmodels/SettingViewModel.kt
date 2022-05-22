@@ -1,5 +1,6 @@
 package com.shainurov.englisheg.presentation.viewmodels
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -14,11 +15,9 @@ import javax.inject.Inject
 @HiltViewModel
 class SettingViewModel @Inject constructor(
     private val getListUseCase: GetListUseCase,
-    private val deleteFileUseCase: DeleteFileUseCase,
-    private val saveAllPlaylistsUseCase: SaveAllPlaylistsUseCase,
-    private val getListOfPlaylistsUseCase: GetListOfPlaylistsUseCase,
     private val savePlaylistUseCase: SavePlaylistUseCase,
-    private val deletePlaylistUseCase: DeletePlaylistUseCase
+    private val deletePlaylistUseCase: DeletePlaylistUseCase,
+    private val deletePlaylistFromDatabase: DeletePlaylistFromDatabase
 ) : ViewModel() {
 
     val data = MutableLiveData<List<PlaylistModel>>()
@@ -42,8 +41,13 @@ class SettingViewModel @Inject constructor(
         )
     }
 
-    fun deletePlaylisyt(filePath: File) {
+    fun deletePlaylisyt(filePath: File, file: String) {
         deleted.value = deletePlaylistUseCase(filePath)
+        viewModelScope.launch(Dispatchers.IO) {
+            Log.d("Hell","${deletePlaylistFromDatabase.invoke(file)}")
+
+        }
+
     }
 
 }
