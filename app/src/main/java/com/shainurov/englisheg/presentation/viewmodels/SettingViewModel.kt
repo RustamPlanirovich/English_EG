@@ -14,9 +14,6 @@ import javax.inject.Inject
 @HiltViewModel
 class SettingViewModel @Inject constructor(
     private val getListUseCase: GetListUseCase,
-    private val deleteFileUseCase: DeleteFileUseCase,
-    private val saveAllPlaylistsUseCase: SaveAllPlaylistsUseCase,
-    private val getListOfPlaylistsUseCase: GetListOfPlaylistsUseCase,
     private val savePlaylistUseCase: SavePlaylistUseCase,
     private val deletePlaylistUseCase: DeletePlaylistUseCase
 ) : ViewModel() {

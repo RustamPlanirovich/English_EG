@@ -6,15 +6,26 @@ import android.content.Context
 import android.net.Uri
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.net.toUri
+import com.google.gson.Gson
+import com.shainurov.data.datasource.room.AppDatabase
 import com.shainurov.data.models.Numbers
+import com.shainurov.data.models.Question
+import com.shainurov.data.models.Questions
 import com.shainurov.data.network.ApiService
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.coroutineScope
 import java.io.File
 import java.io.IOException
 import java.nio.file.Files
 
-class FileDataSource(private val apiService: ApiService, private val context: Context) {
+class FileDataSource(
+    private val apiService: ApiService,
+    private val context: Context,
+    private val db:AppDatabase
+) {
 
-
+    private val questionList = ArrayList<Question>()
 
     suspend fun readPlaylists(): ArrayList<Numbers> {
         val dataA = ArrayList<Numbers>()
@@ -74,5 +85,26 @@ class FileDataSource(private val apiService: ApiService, private val context: Co
             Log.d("Hell", "$x")
         }
         return true
+    }
+
+    suspend fun readDataFromJsonFile(path: File): ArrayList<Question> {
+        questionList.clear()
+        val jsonSelectedFile = context.contentResolver.openInputStream(path.toUri())
+        val inputAsString = jsonSelectedFile?.bufferedReader().use { it?.readText() }
+        val gson = Gson()
+        val data = gson.fromJson(inputAsString, Questions::class.java)
+        for (question in data.questions) {
+            saveSelectPlaylistInDatabase(question)
+            questionList.add(question)
+        }
+        return questionList
+    }
+
+    fun getFromDatabase(fileName: String): List<Question> {
+        return db.dao().getAllQuestion(fileName = fileName)
+    }
+
+    suspend fun saveSelectPlaylistInDatabase(question: Question) {
+        db.dao().insert(question)
     }
 }

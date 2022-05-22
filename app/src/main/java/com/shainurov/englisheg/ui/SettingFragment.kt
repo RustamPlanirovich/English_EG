@@ -12,6 +12,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -81,7 +82,10 @@ class SettingFragment : Fragment() {
             adapter = it
         }
 
-        viewModel.data.observe(viewLifecycleOwner, adapter::submitList)
+        viewModel.data.observe(viewLifecycleOwner){
+            adapter.submitList(it)
+            binding?.progressBar2?.isVisible = false
+        }
 
         binding?.allPlaylists?.adapter = adapter
 

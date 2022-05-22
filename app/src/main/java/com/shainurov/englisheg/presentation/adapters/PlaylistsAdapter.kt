@@ -46,15 +46,19 @@ class PlaylistsAdapter(
             binding.downloadButton.isVisible = !item.download
             binding.deleteButton.isVisible = item.download
 
+            if (item.download){
+                itemView.setOnClickListener{
+                    itemClickListener(item)
+                }
+            }
+
             binding.downloadButton.setOnClickListener {
                 clickListener(item)
             }
             binding.deleteButton.setOnClickListener {
                 deleteClickListener(item.filePath)
             }
-            itemView.setOnClickListener{
-                itemClickListener(item)
-            }
+
         }
     }
 }

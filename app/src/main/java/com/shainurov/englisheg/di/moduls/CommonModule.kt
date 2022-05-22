@@ -1,7 +1,9 @@
 package com.shainurov.englisheg.di.moduls
 
 import android.content.Context
+import androidx.room.Room
 import com.shainurov.data.datasource.FileDataSource
+import com.shainurov.data.datasource.room.AppDatabase
 import com.shainurov.data.network.ApiService
 import com.shainurov.data.repository.FileRepositoryImpl
 import com.shainurov.domain.repository.FileRepository
@@ -34,49 +36,54 @@ class CommonModule {
             .create(ApiService::class.java)
     }
 
-
+    @Provides
+    @Singleton
+    fun provideRoom(@ApplicationContext applicationContext: Context): AppDatabase {
+        val db = Room.databaseBuilder(
+            applicationContext,
+            AppDatabase::class.java, "englisGE"
+        ).build()
+        return db
+    }
 
 
     @Provides
     @Singleton
     fun provideFileDataSource(@ApplicationContext context: Context): FileDataSource {
-        return FileDataSource(getClient(), context)
+        return FileDataSource(getClient(), context, provideRoom(context))
     }
 
     @Provides
     @Singleton
-    fun provideFileRepositroty(@ApplicationContext context: Context): FileRepository {
+    fun provideFileRepositroty(
+        @ApplicationContext context: Context
+    ): FileRepository {
         return FileRepositoryImpl(provideFileDataSource(context))
     }
 
     @Provides
-    fun provideDeleteFileUseCase(@ApplicationContext context: Context):DeleteFileUseCase{
-        return DeleteFileUseCase(provideFileRepositroty(context))
-    }
-
-    @Provides
-    fun provideDeletePlaylistUseCase(@ApplicationContext context: Context):DeletePlaylistUseCase{
+    fun provideDeletePlaylistUseCase(@ApplicationContext context: Context): DeletePlaylistUseCase {
         return DeletePlaylistUseCase(provideFileRepositroty(context))
     }
 
     @Provides
-    fun provideGetListOfPlaylistsUseCase(@ApplicationContext context: Context):GetListOfPlaylistsUseCase{
+    fun provideGetListOfPlaylistsUseCase(@ApplicationContext context: Context): GetListOfPlaylistsUseCase {
         return GetListOfPlaylistsUseCase(provideFileRepositroty(context))
     }
 
     @Provides
-    fun provideGetListUseCase(@ApplicationContext context: Context):GetListUseCase{
+    fun provideGetListUseCase(@ApplicationContext context: Context): GetListUseCase {
         return GetListUseCase(provideFileRepositroty(context))
     }
 
     @Provides
-    fun provideSaveAllPlaylistsUseCase(@ApplicationContext context: Context):SaveAllPlaylistsUseCase{
-        return SaveAllPlaylistsUseCase(provideFileRepositroty(context))
+    fun provideSavePlaylistUseCase(@ApplicationContext context: Context): SavePlaylistUseCase {
+        return SavePlaylistUseCase(provideFileRepositroty(context))
     }
 
     @Provides
-    fun provideSavePlaylistUseCase(@ApplicationContext context: Context):SavePlaylistUseCase{
-        return SavePlaylistUseCase(provideFileRepositroty(context))
+    fun getAllFromDatabase(@ApplicationContext context: Context):GetAllFromDatabase{
+        return GetAllFromDatabase(provideFileRepositroty(context))
     }
 
 

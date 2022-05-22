@@ -7,10 +7,11 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.shainurov.data.models.Question
+import com.shainurov.domain.models.QuestionModel
 import com.shainurov.englisheg.databinding.QuestionItemBinding
 
-class QuestionAdapter(private val clickListener: (wallpaper: Question) -> Unit) :
-    ListAdapter<Question, QuestionAdapter.ItemViewholder>(DiffCallbackQuestion()) {
+class QuestionAdapter(private val clickListener: (wallpaper: QuestionModel) -> Unit) :
+    ListAdapter<QuestionModel, QuestionAdapter.ItemViewholder>(DiffCallbackQuestion()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewholder {
         val binding =
@@ -28,7 +29,7 @@ class QuestionAdapter(private val clickListener: (wallpaper: Question) -> Unit) 
     class ItemViewholder(private val binding: QuestionItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         @SuppressLint("SetTextI18n")
-        fun bind(item: Question, clickListener: (Question) -> Unit) = with(itemView) {
+        fun bind(item: QuestionModel, clickListener: (QuestionModel) -> Unit) = with(itemView) {
             binding.question.text = "Вопрос на английском: " + item.sentenceInEnglish
             binding.questionRus.text = "Вопрос на русском: " + item.sentenceInRussian
             binding.transcription.text = "Транскрипция: " + item.transcription
@@ -45,8 +46,8 @@ class QuestionAdapter(private val clickListener: (wallpaper: Question) -> Unit) 
     }
 }
 
-class DiffCallbackQuestion : DiffUtil.ItemCallback<Question>() {
-    override fun areItemsTheSame(oldItem: Question, newItem: Question): Boolean {
+class DiffCallbackQuestion : DiffUtil.ItemCallback<QuestionModel>() {
+    override fun areItemsTheSame(oldItem: QuestionModel, newItem: QuestionModel): Boolean {
         return oldItem.id == newItem.id ||
                 oldItem.countCorrectAnswers == newItem.countCorrectAnswers ||
                 oldItem.countIncorrectAnswers == newItem.countIncorrectAnswers ||
@@ -57,7 +58,7 @@ class DiffCallbackQuestion : DiffUtil.ItemCallback<Question>() {
                 oldItem.transcription == newItem.transcription
     }
 
-    override fun areContentsTheSame(oldItem: Question, newItem: Question): Boolean {
+    override fun areContentsTheSame(oldItem: QuestionModel, newItem: QuestionModel): Boolean {
         return oldItem == newItem
     }
 }

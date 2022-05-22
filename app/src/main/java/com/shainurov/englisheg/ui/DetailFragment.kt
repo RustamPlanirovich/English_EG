@@ -1,13 +1,19 @@
 package com.shainurov.englisheg.ui
 
+import android.animation.ValueAnimator
+import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.net.toUri
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.shainurov.englisheg.databinding.FragmentDetailBinding
 import com.shainurov.englisheg.presentation.adapters.QuestionAdapter
 import com.shainurov.englisheg.presentation.viewmodels.DetailViewModel
@@ -31,10 +37,12 @@ class DetailFragment : Fragment() {
         return binding?.root
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.readDataFromDatabase()
+
+
 
         QuestionAdapter(
             clickListener = {
@@ -45,13 +53,41 @@ class DetailFragment : Fragment() {
         }
         binding?.detailRecyclerView?.adapter = adapter
 
-        viewModel.data.observe(viewLifecycleOwner) {
-            adapter.submitList(it)
+        binding?.detailRecyclerView?.setOnScrollChangeListener { _, _, _, _, _ ->
+            binding?.textView?.text =
+                "${binding?.detailRecyclerView?.getCurrentPosition()}/${adapter.currentList.count()}"
         }
 
-//        viewModelSetting.sel.observe(viewLifecycleOwner) {
-//            viewModel.readDataFromJsonFile(it.filePath.toUri())
-//        }
+        viewModel.data.observe(viewLifecycleOwner) {
+            adapter.submitList(it)
+            binding?.progressBar?.isVisible = false
+        }
+
+        viewModelSetting.sel.observe(viewLifecycleOwner) {
+            viewModel.readDataFromDatabase(it.name.trim())
+            viewModel.getListOfPlaylist(it.filePath)
+            viewModel.readDataFromDatabase(it.name.trim())
+        }
+
+        binding?.scrollToTop?.setOnClickListener {
+            val animator = ValueAnimator.ofInt(
+                binding?.detailRecyclerView?.getCurrentPosition()!!,
+                0
+            )
+            animator.duration = 3000
+            animator.addUpdateListener { animator ->
+                binding?.detailRecyclerView?.scrollToPosition(
+                    animator.animatedValue.toString().toInt()
+                )
+            }
+            animator.start()
+
+            binding?.detailRecyclerView?.scrollToPosition(1)
+        }
+    }
+
+    private fun RecyclerView?.getCurrentPosition(): Int {
+        return (this?.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
     }
 
     override fun onDestroy() {
