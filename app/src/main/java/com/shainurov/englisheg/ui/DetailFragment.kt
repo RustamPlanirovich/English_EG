@@ -24,8 +24,7 @@ import java.io.File
 @AndroidEntryPoint
 class DetailFragment : Fragment() {
 
-    private var _binding: FragmentDetailBinding? = null
-    private val binding = _binding!!
+    private lateinit var binding: FragmentDetailBinding
     private val viewModelSetting: SettingViewModel by activityViewModels()
     private val viewModel: DetailViewModel by viewModels()
     private lateinit var adapter: QuestionAdapter
@@ -34,7 +33,7 @@ class DetailFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentDetailBinding.inflate(layoutInflater, container, false)
+        binding = FragmentDetailBinding.inflate(layoutInflater, container, false)
         return binding.root
     }
 
@@ -92,7 +91,6 @@ class DetailFragment : Fragment() {
     }
 
     override fun onDestroy() {
-        _binding = null
         super.onDestroy()
     }
 

@@ -24,7 +24,7 @@ import java.nio.file.Files
 class FileDataSource(
     private val apiService: ApiService,
     private val context: Context,
-    private val db:AppDatabase
+    private val db: AppDatabase
 ) {
 
     private val questionList = ArrayList<Question>()
@@ -115,11 +115,15 @@ class FileDataSource(
         fileList.clear()
         val z = context.getExternalFilesDir("DATA")
         for (f in z?.listFiles()!!) {
-            if (f.isFile){
+            if (f.isFile) {
                 fileList.add(FileListData(f.name))
                 fileList.sortBy { it.fileName }
             }
         }
         return fileList
+    }
+
+    suspend fun insertDatabase(question: Question) {
+        db.dao().insert(question)
     }
 }

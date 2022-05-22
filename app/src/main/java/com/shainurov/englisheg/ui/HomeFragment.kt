@@ -19,8 +19,7 @@ import org.json.JSONArray
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
 
-    private var _binding: FragmentHomeBinding? = null
-    private val binding = _binding!!
+    private lateinit var binding: FragmentHomeBinding
     private val viewModel: HomeViewModel by activityViewModels()
     private lateinit var adapter: HomeAdapter
 
@@ -28,7 +27,7 @@ class HomeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentHomeBinding.inflate(layoutInflater, container, false)
+        binding = FragmentHomeBinding.inflate(layoutInflater, container, false)
         return binding.root
     }
 
@@ -69,7 +68,7 @@ class HomeFragment : Fragment() {
     }
 
     override fun onDestroy() {
-        _binding = null
+
         super.onDestroy()
     }
 

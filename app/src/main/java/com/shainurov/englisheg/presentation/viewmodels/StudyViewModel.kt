@@ -1,26 +1,58 @@
 package com.shainurov.englisheg.presentation.viewmodels
 
+import android.os.CountDownTimer
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.shainurov.domain.models.QuestionModel
 import com.shainurov.domain.useCase.GetAllFromDatabase
+import com.shainurov.domain.useCase.InsertDatabaseUseCase
+import com.shainurov.englisheg.presentation.utils.LoginUIState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class StudyViewModel @Inject constructor(
-    private val getAllFromDatabase: GetAllFromDatabase
-): ViewModel() {
+    private val getAllFromDatabase: GetAllFromDatabase,
+    private val insertDatabaseUseCase: InsertDatabaseUseCase
+) : ViewModel() {
 
     val data = MutableLiveData<List<QuestionModel>>()
 
+    private val _viewState = MutableStateFlow<LoginUIState>(LoginUIState.Empty)
+    val viewUIState: StateFlow<LoginUIState> = _viewState
 
-    fun getData(fileName: String){
-        viewModelScope.launch (Dispatchers.IO) {
+    val mutableSelectedItem = MutableLiveData<QuestionModel>()
+
+    private var coun: Int = 0
+
+
+    fun getData(fileName: String) {
+        viewModelScope.launch(Dispatchers.IO) {
             data.postValue(getAllFromDatabase.invoke(fileName))
         }
+    }
+
+    fun insert(questionModel: QuestionModel) {
+        viewModelScope.launch (Dispatchers.IO){
+            insertDatabaseUseCase.invoke(questionModel)
+        }
+    }
+
+    fun startTimeCounter() {
+        coun = 10
+        object : CountDownTimer(11000, 1000) {
+            override fun onTick(millisUntilFinished: Long) {
+                _viewState.value = LoginUIState.Loading("$coun")
+                coun--
+            }
+            override fun onFinish() {
+                _viewState.value = LoginUIState.Success
+            }
+        }.start()
     }
 }

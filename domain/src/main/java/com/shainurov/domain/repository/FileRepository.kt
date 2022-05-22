@@ -13,4 +13,5 @@ interface FileRepository {
     fun savePlaylist(playlistUrl: String?, playlistName: String?)
     fun getAllFromDatabase(fileName: String): List<QuestionModel>
     suspend fun getFileList(): List<FileList>
+    suspend fun insertDatabase(questionModel: QuestionModel)
 }

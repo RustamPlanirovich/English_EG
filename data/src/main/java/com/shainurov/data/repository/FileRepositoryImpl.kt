@@ -39,4 +39,8 @@ class FileRepositoryImpl(
         return fileDataSource.getListWithAllFiles().map { it.mapToData() }
     }
 
+    override suspend fun insertDatabase(questionModel: QuestionModel) {
+        fileDataSource.insertDatabase(questionModel.mapToData())
+    }
+
 }

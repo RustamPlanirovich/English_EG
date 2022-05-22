@@ -29,8 +29,7 @@ import java.io.FileInputStream
 @AndroidEntryPoint
 class SettingFragment : Fragment() {
 
-    private var _binding: FragmentSettingBinding? = null
-    private val binding = _binding!!
+    private lateinit var binding: FragmentSettingBinding
     private lateinit var adapter: PlaylistsAdapter
     private val viewModel: SettingViewModel by activityViewModels()
 
@@ -49,7 +48,7 @@ class SettingFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentSettingBinding.inflate(layoutInflater, container, false)
+        binding = FragmentSettingBinding.inflate(layoutInflater, container, false)
         return binding.root
     }
 
@@ -98,7 +97,6 @@ class SettingFragment : Fragment() {
     }
 
     override fun onDestroy() {
-        null.also { _binding = it }
         super.onDestroy()
     }
 

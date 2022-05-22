@@ -21,18 +21,17 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
-    private var _binding: ActivityMainBinding? = null
-    private val binding = _binding
+    private lateinit var binding: ActivityMainBinding
     private val viewModel: MainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        _binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding?.root)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
 
         val navController = this.findNavController(R.id.activity_main_nav_host_fragment)
-        binding?.activityMainBottomNavigationView?.setupWithNavController(navController)
+        binding.activityMainBottomNavigationView.setupWithNavController(navController)
 
         if (ActivityCompat.checkSelfPermission(
                 this,
@@ -83,7 +82,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onDestroy() {
-        _binding = null
         super.onDestroy()
     }
 }

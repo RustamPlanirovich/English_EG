@@ -82,13 +82,18 @@ class CommonModule {
     }
 
     @Provides
-    fun getAllFromDatabase(@ApplicationContext context: Context):GetAllFromDatabase{
+    fun getAllFromDatabase(@ApplicationContext context: Context): GetAllFromDatabase {
         return GetAllFromDatabase(provideFileRepositroty(context))
     }
 
     @Provides
-    fun provideGetFileList(@ApplicationContext context: Context):GetFileListUseCase{
+    fun provideGetFileList(@ApplicationContext context: Context): GetFileListUseCase {
         return GetFileListUseCase(provideFileRepositroty(context))
+    }
+
+    @Provides
+    fun provideInsertDatabase(@ApplicationContext context: Context): InsertDatabaseUseCase {
+        return InsertDatabaseUseCase(provideFileRepositroty(context))
     }
 
 

@@ -34,6 +34,9 @@
         <action
             android:id="@+id/action_editFragment_to_settingFragment"
             app:destination="@id/settingFragment" />
+        <action
+            android:id="@+id/action_editFragment_to_studyFragment"
+            app:destination="@id/studyFragment" />
     </fragment>
     <fragment
         android:id="@+id/detailFragment"
@@ -48,5 +51,9 @@
         android:id="@+id/studyFragment"
         android:name="com.shainurov.englisheg.ui.StudyFragment"
         android:label="fragment_study"
-        tools:layout="@layout/fragment_study" />
+        tools:layout="@layout/fragment_study" >
+        <action
+            android:id="@+id/action_studyFragment_to_editFragment"
+            app:destination="@id/editFragment" />
+    </fragment>
 </navigation>
