@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -41,6 +42,13 @@ class DetailFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
 
+        binding.searchById.doOnTextChanged { text, start, before, count ->
+            if (text != null) {
+                if (text.isNotEmpty()) {
+                    binding.detailRecyclerView.scrollToPosition(text.toString().toInt())
+                }
+            }
+        }
 
 
         QuestionAdapter(
