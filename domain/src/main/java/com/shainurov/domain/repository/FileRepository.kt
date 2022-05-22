@@ -1,5 +1,6 @@
 package com.shainurov.domain.repository
 
+import com.shainurov.domain.models.FileList
 import com.shainurov.domain.models.PlaylistModel
 import com.shainurov.domain.models.QuestionModel
 
@@ -11,4 +12,5 @@ interface FileRepository {
     suspend fun getListOfPlalist(path: File): List<QuestionModel>
     fun savePlaylist(playlistUrl: String?, playlistName: String?)
     fun getAllFromDatabase(fileName: String): List<QuestionModel>
+    suspend fun getFileList(): List<FileList>
 }

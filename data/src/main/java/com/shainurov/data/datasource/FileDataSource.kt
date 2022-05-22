@@ -4,11 +4,13 @@ import android.R
 import android.app.DownloadManager
 import android.content.Context
 import android.net.Uri
+import android.os.Environment
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toUri
 import com.google.gson.Gson
 import com.shainurov.data.datasource.room.AppDatabase
+import com.shainurov.data.models.FileListData
 import com.shainurov.data.models.Numbers
 import com.shainurov.data.models.Question
 import com.shainurov.data.models.Questions
@@ -26,6 +28,7 @@ class FileDataSource(
 ) {
 
     private val questionList = ArrayList<Question>()
+    private val fileList = ArrayList<FileListData>()
 
     suspend fun readPlaylists(): ArrayList<Numbers> {
         val dataA = ArrayList<Numbers>()
@@ -106,5 +109,17 @@ class FileDataSource(
 
     suspend fun saveSelectPlaylistInDatabase(question: Question) {
         db.dao().insert(question)
+    }
+
+    suspend fun getListWithAllFiles(): List<FileListData> {
+        fileList.clear()
+        val z = context.getExternalFilesDir("DATA")
+        for (f in z?.listFiles()!!) {
+            if (f.isFile){
+                fileList.add(FileListData(f.name))
+                fileList.sortBy { it.fileName }
+            }
+        }
+        return fileList
     }
 }

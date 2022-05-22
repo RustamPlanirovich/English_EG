@@ -11,14 +11,15 @@ import com.shainurov.englisheg.databinding.FragmentEditBinding
 
 class EditFragment : Fragment() {
 
-    private var binding: FragmentEditBinding? = null
+    private var _binding: FragmentEditBinding? = null
+    private val binding = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentEditBinding.inflate(layoutInflater, container, false)
-        return binding?.root
+        _binding = FragmentEditBinding.inflate(layoutInflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -26,7 +27,7 @@ class EditFragment : Fragment() {
     }
 
     override fun onDestroy() {
-        binding = null
+        _binding = null
         super.onDestroy()
     }
 

@@ -86,5 +86,10 @@ class CommonModule {
         return GetAllFromDatabase(provideFileRepositroty(context))
     }
 
+    @Provides
+    fun provideGetFileList(@ApplicationContext context: Context):GetFileListUseCase{
+        return GetFileListUseCase(provideFileRepositroty(context))
+    }
+
 
 }

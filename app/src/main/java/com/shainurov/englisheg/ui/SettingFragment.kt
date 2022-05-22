@@ -29,7 +29,8 @@ import java.io.FileInputStream
 @AndroidEntryPoint
 class SettingFragment : Fragment() {
 
-    private var binding: FragmentSettingBinding? = null
+    private var _binding: FragmentSettingBinding? = null
+    private val binding = _binding!!
     private lateinit var adapter: PlaylistsAdapter
     private val viewModel: SettingViewModel by activityViewModels()
 
@@ -48,8 +49,8 @@ class SettingFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentSettingBinding.inflate(layoutInflater, container, false)
-        return binding?.root
+        _binding = FragmentSettingBinding.inflate(layoutInflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -84,20 +85,20 @@ class SettingFragment : Fragment() {
 
         viewModel.data.observe(viewLifecycleOwner){
             adapter.submitList(it)
-            binding?.progressBar2?.isVisible = false
+            binding.progressBar2.isVisible = false
         }
 
-        binding?.allPlaylists?.adapter = adapter
+        binding.allPlaylists.adapter = adapter
 
-        binding?.swipe?.setOnRefreshListener {
+        binding.swipe.setOnRefreshListener {
             viewModel.loadData()
-            binding?.swipe?.isRefreshing = false
+            binding.swipe.isRefreshing = false
         }
 
     }
 
     override fun onDestroy() {
-        null.also { binding = it }
+        null.also { _binding = it }
         super.onDestroy()
     }
 

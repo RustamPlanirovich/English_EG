@@ -24,7 +24,8 @@ import java.io.File
 @AndroidEntryPoint
 class DetailFragment : Fragment() {
 
-    private var binding: FragmentDetailBinding? = null
+    private var _binding: FragmentDetailBinding? = null
+    private val binding = _binding!!
     private val viewModelSetting: SettingViewModel by activityViewModels()
     private val viewModel: DetailViewModel by viewModels()
     private lateinit var adapter: QuestionAdapter
@@ -33,8 +34,8 @@ class DetailFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentDetailBinding.inflate(layoutInflater, container, false)
-        return binding?.root
+        _binding = FragmentDetailBinding.inflate(layoutInflater, container, false)
+        return binding.root
     }
 
     @SuppressLint("SetTextI18n")
@@ -51,16 +52,16 @@ class DetailFragment : Fragment() {
         ).also {
             adapter = it
         }
-        binding?.detailRecyclerView?.adapter = adapter
+        binding.detailRecyclerView.adapter = adapter
 
-        binding?.detailRecyclerView?.setOnScrollChangeListener { _, _, _, _, _ ->
-            binding?.textView?.text =
-                "${binding?.detailRecyclerView?.getCurrentPosition()}/${adapter.currentList.count()}"
+        binding.detailRecyclerView.setOnScrollChangeListener { _, _, _, _, _ ->
+            binding.textView.text =
+                "${binding.detailRecyclerView.getCurrentPosition()}/${adapter.currentList.count()}"
         }
 
         viewModel.data.observe(viewLifecycleOwner) {
             adapter.submitList(it)
-            binding?.progressBar?.isVisible = false
+            binding.progressBar.isVisible = false
         }
 
         viewModelSetting.sel.observe(viewLifecycleOwner) {
@@ -69,20 +70,20 @@ class DetailFragment : Fragment() {
             viewModel.readDataFromDatabase(it.name.trim())
         }
 
-        binding?.scrollToTop?.setOnClickListener {
+        binding.scrollToTop.setOnClickListener {
             val animator = ValueAnimator.ofInt(
-                binding?.detailRecyclerView?.getCurrentPosition()!!,
+                binding.detailRecyclerView.getCurrentPosition()!!,
                 0
             )
             animator.duration = 3000
             animator.addUpdateListener { animator ->
-                binding?.detailRecyclerView?.scrollToPosition(
+                binding.detailRecyclerView.scrollToPosition(
                     animator.animatedValue.toString().toInt()
                 )
             }
             animator.start()
 
-            binding?.detailRecyclerView?.scrollToPosition(1)
+            binding.detailRecyclerView.scrollToPosition(1)
         }
     }
 
@@ -91,7 +92,7 @@ class DetailFragment : Fragment() {
     }
 
     override fun onDestroy() {
-        binding = null
+        _binding = null
         super.onDestroy()
     }
 

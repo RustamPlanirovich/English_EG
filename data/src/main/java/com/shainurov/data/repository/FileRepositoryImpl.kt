@@ -1,7 +1,9 @@
 package com.shainurov.data.repository
 
+import com.shainurov.data.converter.mapToData
 import com.shainurov.data.converter.mapToDomain
 import com.shainurov.data.datasource.FileDataSource
+import com.shainurov.domain.models.FileList
 import com.shainurov.domain.models.PlaylistModel
 import com.shainurov.domain.models.QuestionModel
 import com.shainurov.domain.repository.FileRepository
@@ -31,6 +33,10 @@ class FileRepositoryImpl(
 
     override fun getAllFromDatabase(fileName: String): List<QuestionModel> {
         return fileDataSource.getFromDatabase(fileName).map { it.mapToDomain() }
+    }
+
+    override suspend fun getFileList(): List<FileList> {
+        return fileDataSource.getListWithAllFiles().map { it.mapToData() }
     }
 
 }
