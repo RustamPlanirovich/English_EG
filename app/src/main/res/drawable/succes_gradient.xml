@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:duration="2000"
+        android:drawable="@drawable/succes_one"/>
+
+    <item android:duration="2000"
+        android:drawable="@drawable/succes_two"/>
+
+    <item android:duration="2000"
+        android:drawable="@drawable/succes_three"/>
+
+    <item android:duration="2000"
+        android:drawable="@drawable/succes_four"/>
+
+    <item android:duration="2000"
+        android:drawable="@drawable/succes_five"/>
+
+</animation-list>

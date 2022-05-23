@@ -8,12 +8,17 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.shainurov.englisheg.R
 import com.shainurov.englisheg.databinding.FragmentHomeBinding
 import com.shainurov.englisheg.presentation.adapters.HomeAdapter
 import com.shainurov.englisheg.presentation.viewmodels.HomeViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.json.JSONArray
 
 @AndroidEntryPoint
@@ -38,7 +43,10 @@ class HomeFragment : Fragment() {
         HomeAdapter(
             clickListener = {
                 viewModel.selectFile.value = it
-                this.findNavController().navigate(R.id.action_homeFragment_to_studyFragment)
+                viewLifecycleOwner.lifecycleScope.launch (Dispatchers.Main){
+                    delay(2000)
+                    findNavController().navigate(R.id.action_homeFragment_to_studyFragment)
+                }
             }
         ).also {
             adapter = it

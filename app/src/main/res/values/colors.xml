@@ -11,4 +11,6 @@
     <color name="all_background">#003B46</color>
     <color name="all_button">#66A5AD</color>
     <color name="all_text">#003B46</color>
+    <color name="text_color">#7C6F72</color>
+    <color name="succes">#92A3FD</color>
 </resources>

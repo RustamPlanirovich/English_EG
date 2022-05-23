@@ -6,14 +6,7 @@ plugins {
 }
 
 android {
-    signingConfigs {
-        debug {
-            storeFile file('C:\\Users\\administrator\\Documents\\my_app_keystore\\release.jks')
-            storePassword 'Israr@1990'
-            keyAlias 'release'
-            keyPassword 'Israr@1990'
-        }
-    }
+
     compileSdk 32
 
     defaultConfig {
@@ -47,6 +40,8 @@ dependencies {
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.appcompat:appcompat:1.4.1'
     implementation 'com.google.android.material:material:1.6.0'
+    implementation 'com.google.firebase:firebase-crashlytics-ktx:18.2.1'
+    implementation 'com.google.firebase:firebase-analytics-ktx:19.0.0'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
@@ -59,8 +54,6 @@ dependencies {
     implementation 'androidx.room:room-runtime:2.4.2'
     implementation 'androidx.room:room-ktx:2.4.2'
     kapt 'androidx.room:room-compiler:2.4.2'
-    implementation 'androidx.paging:paging-runtime:3.1.1'
-    implementation("androidx.room:room-paging:2.5.0-alpha01")
 
     //DaggerHilt
     implementation "com.google.dagger:hilt-android:2.42"

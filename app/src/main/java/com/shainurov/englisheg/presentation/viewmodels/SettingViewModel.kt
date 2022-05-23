@@ -20,7 +20,7 @@ class SettingViewModel @Inject constructor(
     private val deletePlaylistFromDatabase: DeletePlaylistFromDatabase
 ) : ViewModel() {
 
-    val data = MutableLiveData<List<PlaylistModel>>()
+    val data: MutableLiveData<List<PlaylistModel>> = MutableLiveData()
     val deleted = MutableLiveData<Boolean>()
     val sel = MutableLiveData<PlaylistModel>()
 
@@ -30,7 +30,7 @@ class SettingViewModel @Inject constructor(
 
     fun loadData() {
         viewModelScope.launch(Dispatchers.IO) {
-            data.postValue(getListUseCase.invoke())
+            data.postValue(getListUseCase.invoke().let { it })
         }
     }
 
@@ -44,7 +44,7 @@ class SettingViewModel @Inject constructor(
     fun deletePlaylisyt(filePath: File, file: String) {
         deleted.value = deletePlaylistUseCase(filePath)
         viewModelScope.launch(Dispatchers.IO) {
-            Log.d("Hell","${deletePlaylistFromDatabase.invoke(file)}")
+            Log.d("Hell", "${deletePlaylistFromDatabase.invoke(file)}")
 
         }
 

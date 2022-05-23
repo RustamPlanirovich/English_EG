@@ -15,7 +15,7 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(private val getFileListUseCase: GetFileListUseCase) :
     ViewModel() {
 
-    val data = MutableLiveData<List<FileList>>()
+    val data:MutableLiveData<List<FileList>> = MutableLiveData()
     val selectFile = MutableLiveData<FileList>()
 
 
@@ -23,7 +23,7 @@ class HomeViewModel @Inject constructor(private val getFileListUseCase: GetFileL
     fun getList() {
         viewModelScope.launch(Dispatchers.IO) {
             delay(2000)
-            data.postValue(getFileListUseCase.invoke())
+            data.postValue(getFileListUseCase.invoke().let { it })
         }
     }
 }

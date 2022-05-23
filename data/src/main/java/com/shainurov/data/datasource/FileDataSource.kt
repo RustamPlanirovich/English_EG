@@ -4,11 +4,9 @@ import android.R
 import android.app.DownloadManager
 import android.content.Context
 import android.net.Uri
-import android.os.Environment
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toUri
-import androidx.paging.PagingSource
 import com.google.gson.Gson
 import com.shainurov.data.datasource.room.AppDatabase
 import com.shainurov.data.models.FileListData
@@ -16,8 +14,6 @@ import com.shainurov.data.models.Numbers
 import com.shainurov.data.models.Question
 import com.shainurov.data.models.Questions
 import com.shainurov.data.network.ApiService
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
 import java.io.File
 import java.io.IOException
 import java.nio.file.Files
@@ -119,10 +115,12 @@ class FileDataSource(
     suspend fun getListWithAllFiles(): List<FileListData> {
         fileList.clear()
         val z = context.getExternalFilesDir("DATA")
-        for (f in z?.listFiles()!!) {
-            if (f.isFile) {
-                fileList.add(FileListData(f.name))
-                fileList.sortBy { it.fileName }
+        if (z?.listFiles() != null){
+            for (f in z?.listFiles()) {
+                if (f.isFile) {
+                    fileList.add(FileListData(f.name))
+                    fileList.sortBy { it.fileName }
+                }
             }
         }
         return fileList

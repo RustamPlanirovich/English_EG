@@ -1,6 +1,7 @@
 package com.shainurov.englisheg.ui
 
 import android.animation.ObjectAnimator
+import android.graphics.drawable.AnimationDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.KeyEvent
@@ -14,6 +15,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.google.firebase.crashlytics.internal.common.CommonUtils
 import com.shainurov.domain.models.QuestionModel
 import com.shainurov.englisheg.R
 import com.shainurov.englisheg.databinding.FragmentStudyBinding
@@ -33,6 +35,7 @@ class StudyFragment : Fragment() {
     private val viewModel: StudyViewModel by activityViewModels()
     private val viewModelHome: HomeViewModel by activityViewModels()
     private var num: Int = 0
+    private lateinit var animDrawable: AnimationDrawable
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,8 +47,7 @@ class StudyFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Toast.makeText(requireContext(),"Hello",Toast.LENGTH_SHORT).show()
-        viewModel.num.observe(viewLifecycleOwner){
+        viewModel.num.observe(viewLifecycleOwner) {
             num = it
         }
 
@@ -53,14 +55,13 @@ class StudyFragment : Fragment() {
             viewModel.getData(it.fileName)
         }
 
-        viewModel.currentId.observe(viewLifecycleOwner){
+        viewModel.currentId.observe(viewLifecycleOwner) {
             binding.currentId.text = it
         }
 
-
+        binding.questionLayout.setBackgroundColor(resources.getColor(R.color.succes))
 
         viewModel.data.observe(viewLifecycleOwner) {
-//            records.addAll(it)
             if (viewModel.data.value!!.isNotEmpty()) {
                 binding.nextBtn.apply {
                     isVisible = true
@@ -68,11 +69,10 @@ class StudyFragment : Fragment() {
                 }
                 binding.transcriptionTV.isVisible = false
                 binding.learnCB.isVisible = false
-            }
-//todo here
-            loadSentece()
-            viewModel.currentId()
 
+                loadSentece()
+                viewModel.currentId()
+            }
         }
 
 
@@ -91,10 +91,8 @@ class StudyFragment : Fragment() {
         }
 
         binding.learnCB.setOnCheckedChangeListener { compoundButton, b ->
-//            records[num].removeFromStudy = b
             viewModel.data.value!![num].removeFromStudy = b
             lifecycleScope.launch(Dispatchers.IO) {
-//                records[num].let { viewModel.insert(it) }
                 viewModel.data.value!![num].let { viewModel.insert(it) }
             }
         }
@@ -126,8 +124,15 @@ class StudyFragment : Fragment() {
                                 }
 
                                 answerET.isEnabled = false
-                                nextBtn.isVisible =true
-                                questionView.setTextColor(resources.getColor(android.R.color.holo_green_light))
+                                nextBtn.isVisible = true
+
+                                binding.questionLayout.background = resources.getDrawable(R.drawable.succes_gradient)
+                                animDrawable = questionLayout.background as AnimationDrawable
+                                animDrawable.setEnterFadeDuration(1500)
+                                animDrawable.setExitFadeDuration(2000)
+                                animDrawable.start()
+
+
 
                             } else {
                                 binding.transcriptionTV.isVisible = true
@@ -141,12 +146,14 @@ class StudyFragment : Fragment() {
                                 answerET.isEnabled = false
 
                                 correctAnswerCV.isVisible = true
-//                                correctAnswer.text = records[num].sentenceInEnglish
                                 correctAnswer.text = viewModel.data.value!![num].sentenceInEnglish
                                 viewModel.startTimeCounter()
 
-
-                                questionView.setTextColor(resources.getColor(android.R.color.holo_red_dark))
+                                binding.questionLayout.background = resources.getDrawable(R.drawable.error_gradient)
+                                animDrawable = questionLayout.background as AnimationDrawable
+                                animDrawable.setEnterFadeDuration(1500)
+                                animDrawable.setExitFadeDuration(2000)
+                                animDrawable.start()
                             }
                         }
                     }
@@ -160,13 +167,13 @@ class StudyFragment : Fragment() {
         }
 
         binding.nextBtn.setOnClickListener {
+            animDrawable.stop()
+            binding.questionLayout.setBackgroundColor(resources.getColor(R.color.succes))
             binding.editCard.isVisible = true
             binding.answerET.text.clear()
             viewModel.random()
             loadSentece()
             viewModel.currentId()
-
-//            viewModel.mutableSelectedItem.value = records[num]
             viewModel.mutableSelectedItem.value = viewModel.data.value?.get(num)
         }
     }
@@ -181,17 +188,14 @@ class StudyFragment : Fragment() {
             answerET.isVisible = true
             learnCB.isVisible = true
 
-            questionView.setTextColor(resources.getColor(R.color.white))
+            questionView.setTextColor(resources.getColor(R.color.black))
 
             if (answerET.text.isEmpty()) {
                 nextBtn.isVisible = false
                 answerET.isEnabled = true
             }
-//            learnCB.isChecked = records[num].removeFromStudy
             learnCB.isChecked = viewModel.data.value!![num].removeFromStudy
-//            questionView.text = records[num].sentenceInRussian
             questionView.text = viewModel.data.value!![num].sentenceInRussian
-//            transcriptionTV.text = records[num].transcription
             transcriptionTV.text = viewModel.data.value!![num].transcription
 
             ObjectAnimator.ofInt(
@@ -202,9 +206,7 @@ class StudyFragment : Fragment() {
                 .setDuration(100)
                 .start()
         }
-
     }
-
 
 
     override fun onDestroy() {
